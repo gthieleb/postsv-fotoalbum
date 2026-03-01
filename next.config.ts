@@ -1,12 +1,9 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  output: 'export',
-  trailingSlash: true,
-  distDir: 'out',
-  images: {
-    unoptimized: true
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    optimizeCss: false,
+    optimizePackageImports: ['framer-motion']
   }
-};
+}
 
-export default nextConfig;
+module.exports = nextConfig
