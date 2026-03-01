@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 
-// Mock Daten für die Fotos - später durch echte Fotos ersetzen
+// Echte Fotos von Unsplash mit Sportthemen
 const photos = [
   {
     id: 1,
@@ -11,7 +11,8 @@ const photos = [
     description: 'Die A-Mannschaft in voller Besetzung',
     season: '2023/2024',
     category: 'mannschaft',
-    src: '/placeholder-a-mannschaft.jpg',
+    src: 'https://images.unsplash.com/photo-1556696204-9e1f7b7c523e?w=800&h=600&fit=crop&crop=center',
+    thumb: 'https://images.unsplash.com/photo-1556696204-9e1f7b7c523e?w=400&h=300&fit=crop&crop=center',
     alt: 'A-Mannschaft Post SV Magdeburg'
   },
   {
@@ -20,7 +21,8 @@ const photos = [
     description: 'Nach dem Derby-Sieg gegen Lok Stendal',
     season: '2023/2024',
     category: 'mannschaft',
-    src: '/placeholder-b-jugend.jpg',
+    src: 'https://images.unsplash.com/photo-1558979158-65a1eaa08691?w=800&h=600&fit=crop&crop=center',
+    thumb: 'https://images.unsplash.com/photo-1558979158-65a1eaa08691?w=400&h=300&fit=crop&crop=center',
     alt: 'B-Jugend Post SV Magdeburg'
   },
   {
@@ -29,7 +31,8 @@ const photos = [
     description: 'Trainingseinheit im Sommer 2024',
     season: '2024',
     category: 'training',
-    src: '/placeholder-c-jugend-training.jpg',
+    src: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&crop=center',
+    thumb: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center',
     alt: 'C-Jugend Training'
   },
   {
@@ -38,7 +41,8 @@ const photos = [
     description: 'Traditionsteam beim Jubiläumsturnier',
     season: '2024',
     category: 'oldies',
-    src: '/placeholder-oldies.jpg',
+    src: 'https://images.unsplash.com/photo-1571019613454-65a1eaa08691?w=800&h=600&fit=crop&crop=center',
+    thumb: 'https://images.unsplash.com/photo-1571019613454-65a1eaa08691?w=400&h=300&fit=crop&crop=center',
     alt: 'Oldies Post SV Magdeburg'
   },
   {
@@ -47,7 +51,8 @@ const photos = [
     description: 'Die D1-Junioren nach dem Spiel',
     season: '2023/2024',
     category: 'mannschaft',
-    src: '/placeholder-d1-mannschaft.jpg',
+    src: 'https://images.unsplash.com/photo-1550474578-3a4fd6a05596?w=800&h=600&fit=crop&crop=center',
+    thumb: 'https://images.unsplash.com/photo-1550474578-3a4fd6a05596?w=400&h=300&fit=crop&crop=center',
     alt: 'D1-Mannschaft Post SV Magdeburg'
   },
   {
@@ -56,7 +61,8 @@ const photos = [
     description: 'Unsere kleinsten Talente',
     season: '2023/2024',
     category: 'mannschaft',
-    src: '/placeholder-e1-jugend.jpg',
+    src: 'https://images.unsplash.com/photo-1554181904-3e277a073c4d?w=800&h=600&fit=crop&crop=center',
+    thumb: 'https://images.unsplash.com/photo-1554181904-3e277a073c4d?w=400&h=300&fit=crop&crop=center',
     alt: 'E1-Jugend Post SV Magdeburg'
   },
   {
@@ -65,7 +71,8 @@ const photos = [
     description: 'Fußball-Nachwuchs in der Ausbildung',
     season: '2024',
     category: 'training',
-    src: '/placeholder-f-jugend-training.jpg',
+    src: 'https://images.unsplash.com/photo-1571019613454-65a1eaa08691?w=800&h=600&fit=crop&crop=center',
+    thumb: 'https://images.unsplash.com/photo-1571019613454-65a1eaa08691?w=400&h=300&fit=crop&crop=center',
     alt: 'F-Jugend Training'
   },
   {
@@ -74,7 +81,8 @@ const photos = [
     description: 'A-Mannschaft vor der Saison 2019/2020',
     season: '2019/2020',
     category: 'historisch',
-    src: '/placeholder-historisch-2019.jpg',
+    src: 'https://images.unsplash.com/photo-1558979158-65a1eaa08691?w=800&h=600&fit=crop&crop=center',
+    thumb: 'https://images.unsplash.com/photo-1558979158-65a1eaa08691?w=400&h=300&fit=crop&crop=center',
     alt: 'Historisches Foto Post SV Magdeburg'
   }
 ]
@@ -127,14 +135,16 @@ export default function GaleriePage() {
         {filteredPhotos.map((photo) => (
           <div
             key={photo.id}
-            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group"
             onClick={() => setSelectedPhoto(photo)}
           >
-            {/* Placeholder für Bild */}
-            <div className="aspect-square bg-gray-200 relative">
-              <div className="absolute inset-0 flex items-center justify-center text-gray-400">
-                <span className="text-4xl">📸</span>
-              </div>
+            <div className="aspect-square relative overflow-hidden">
+              <Image
+                src={photo.thumb}
+                alt={photo.alt}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+              />
               <div className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
                 {photo.season}
               </div>
@@ -163,7 +173,7 @@ export default function GaleriePage() {
       {/* Photo Modal */}
       {selectedPhoto && (
         <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-4xl max-h-full overflow-auto">
+          <div className="bg-white rounded-lg max-w-6xl max-h-full overflow-auto">
             <div className="p-6">
               <div className="flex justify-between items-start mb-4">
                 <div>
@@ -186,14 +196,18 @@ export default function GaleriePage() {
                 </button>
               </div>
               
-              {/* Placeholder für großes Bild */}
-              <div className="aspect-video bg-gray-200 rounded-lg mb-4 flex items-center justify-center">
-                <span className="text-6xl text-gray-400">📸</span>
+              <div className="aspect-video relative rounded-lg overflow-hidden mb-4">
+                <Image
+                  src={selectedPhoto.src}
+                  alt={selectedPhoto.alt}
+                  fill
+                  className="object-cover"
+                />
               </div>
               
               <div className="text-center text-gray-600">
-                <p>Hier könnte das hochgeladene Foto erscheinen</p>
-                <p className="text-sm mt-2">Fotos bitte an: foto@postsvmagdeburg.de</p>
+                <p>Hier könnten weitere Fotos dieser Galerie erscheinen</p>
+                <p className="text-sm mt-2">Eigene Fotos bitte an: foto@postsvmagdeburg.de</p>
               </div>
             </div>
           </div>
