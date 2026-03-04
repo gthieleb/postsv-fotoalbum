@@ -87,6 +87,8 @@ const photos = [
   }
 ]
 
+type Photo = typeof photos[number]
+
 const categories = [
   { id: 'all', name: 'Alle', count: photos.length },
   { id: 'mannschaft', name: 'Mannschaften', count: photos.filter(p => p.category === 'mannschaft').length },
@@ -97,7 +99,7 @@ const categories = [
 
 export default function GaleriePage() {
   const [selectedCategory, setSelectedCategory] = useState('all')
-  const [selectedPhoto, setSelectedPhoto] = useState<any>(null)
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null)
 
   const filteredPhotos = selectedCategory === 'all' 
     ? photos 

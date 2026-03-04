@@ -73,7 +73,7 @@ export default function Footer() {
           >
             <h3 className="text-xl font-bold mb-6">Schnelllinks</h3>
             <ul className="space-y-3">
-              {footerLinks.map((link, index) => (
+              {footerLinks.map((link) => (
                 <motion.li key={link.name} whileHover={{ x: 5 }}>
                   <Link 
                     href={link.href}
