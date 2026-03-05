@@ -33,6 +33,13 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# backend (Strapi)
+backend/.strapi
+backend/.strapi-updater.json
+backend/dist
+backend/node_modules
+backend/package-lock.json
+
 # vercel
 .vercel
 

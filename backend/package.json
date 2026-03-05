@@ -15,16 +15,16 @@
     "deploy": "strapi deploy"
   },
   "dependencies": {
-    "@strapi/plugin-graphql": "^5.0.0",
-    "@strapi/plugin-i18n": "^5.0.0",
-    "@strapi/plugin-users-permissions": "^5.0.0",
-    "@strapi/provider-upload-aws-s3": "^5.0.0",
-    "@strapi/strapi": "^5.0.0",
+    "@strapi/plugin-graphql": "^4.25.0",
+    "@strapi/plugin-i18n": "^4.25.0",
+    "@strapi/plugin-users-permissions": "^4.25.0",
+    "@strapi/provider-upload-aws-s3": "^4.25.0",
+    "@strapi/strapi": "^4.25.0",
     "pg": "^8.13.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.22.3",
-    "styled-components": "^6.1.8"
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^5.2.0",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
