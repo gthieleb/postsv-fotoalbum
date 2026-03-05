@@ -1,0 +1,22 @@
+{
+  "extends": "@strapi/typescript-utils/tsconfigs/server",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": ".",
+    "typeRoots": ["./node_modules/@types", "./types"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.js"
+  ],
+  "exclude": [
+    "node_modules/",
+    "dist/",
+    ".cache/",
+    "build/"
+  ]
+}
