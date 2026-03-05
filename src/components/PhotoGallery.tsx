@@ -3,36 +3,37 @@
 import { useState } from "react"
 import Image from "next/image"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card"
-import { Button } from "@/components/ui/Button"
-import { Heart, Download, Share2, Eye } from "lucide-react"
+import { Heart, Download, Share2, Eye, Camera, Users, Trophy } from "lucide-react"
 
 const photoCategories = [
   {
     id: "mannschaft",
     title: "Mannschaft",
+    icon: Users,
     photos: [
-      { id: 1, src: "https://via.placeholder.com/400x400", alt: "Mannschaft 2024", likes: 42, views: 1250 },
-      { id: 2, src: "https://via.placeholder.com/400x400", alt: "Training 2024", likes: 38, views: 980 },
-      { id: 3, src: "https://via.placeholder.com/400x400", alt: "Auswärtsfahrt", likes: 56, views: 1450 },
+      { id: 1, src: "https://picsum.photos/seed/mannschaft1/800/600", alt: "Mannschaft 2024", likes: 42, views: 1250 },
+      { id: 2, src: "https://picsum.photos/seed/mannschaft2/800/600", alt: "Training 2024", likes: 38, views: 980 },
+      { id: 3, src: "https://picsum.photos/seed/mannschaft3/800/600", alt: "Auswärtsfahrt", likes: 56, views: 1450 },
     ]
   },
   {
     id: "events",
     title: "Events & Veranstaltungen",
+    icon: Trophy,
     photos: [
-      { id: 4, src: "https://via.placeholder.com/400x400", alt: "Weihnachtsfeier", likes: 78, views: 2100 },
-      { id: 5, src: "https://via.placeholder.com/400x400", alt: "Jubiläum", likes: 92, views: 2850 },
-      { id: 6, src: "https://via.placeholder.com/400x400", alt: "Sommerfest", likes: 65, views: 1680 },
+      { id: 4, src: "https://picsum.photos/seed/event1/800/600", alt: "Weihnachtsfeier", likes: 78, views: 2100 },
+      { id: 5, src: "https://picsum.photos/seed/event2/800/600", alt: "Jubiläum", likes: 92, views: 2850 },
+      { id: 6, src: "https://picsum.photos/seed/event3/800/600", alt: "Sommerfest", likes: 65, views: 1680 },
     ]
   },
   {
     id: "training",
     title: "Training & Sportstätten",
+    icon: Camera,
     photos: [
-      { id: 7, src: "https://via.placeholder.com/400x400", alt: "Halle 1", likes: 29, views: 720 },
-      { id: 8, src: "https://via.placeholder.com/400x400", alt: "Outdoor Platz", likes: 45, views: 1100 },
-      { id: 9, src: "https://via.placeholder.com/400x400", alt: "Fitnessbereich", likes: 67, views: 1950 },
+      { id: 7, src: "https://picsum.photos/seed/training1/800/600", alt: "Halle 1", likes: 29, views: 720 },
+      { id: 8, src: "https://picsum.photos/seed/training2/800/600", alt: "Outdoor Platz", likes: 45, views: 1100 },
+      { id: 9, src: "https://picsum.photos/seed/training3/800/600", alt: "Fitnessbereich", likes: 67, views: 1950 },
     ]
   }
 ]
@@ -53,157 +54,160 @@ export default function PhotoGallery() {
     })
   }
 
-  const allPhotos = photoCategories.flatMap(category => category.photos)
+  const allPhotos = photoCategories.flatMap(category => 
+    category.photos.map(photo => ({ ...photo, category: category.title }))
+  )
+  
   const filteredPhotos = selectedCategory === "all" 
     ? allPhotos 
-    : photoCategories.find(cat => cat.id === selectedCategory)?.photos || []
+    : allPhotos.filter(photo => photo.category === photoCategories.find(cat => cat.id === selectedCategory)?.title)
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-      <div className="container mx-auto px-4">
-        {/* Header */}
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-12 animate-slide-up">
-          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
-            Fotoalbum
+          <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary rounded-full text-sm font-medium mb-4">
+            Post SV Magdeburg 1926 e.V.
+          </span>
+          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+            <span className="text-gradient">Fotoalbum</span>
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Entdecke die schönsten Momente des Postsportverein Magdeburg 1926 e.V.
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Entdecke die schönsten Momente unseres Vereins
           </p>
         </div>
 
-        {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          <Button
-            variant={selectedCategory === "all" ? "premium" : "outline"}
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <button
             onClick={() => setSelectedCategory("all")}
-            className="px-6 py-3"
+            className={`px-5 py-2.5 rounded-lg font-medium transition-all duration-300 ${
+              selectedCategory === "all"
+                ? "bg-primary text-white shadow-lg shadow-primary/25"
+                : "bg-card text-foreground hover:bg-muted border border-border"
+            }`}
           >
-            Alle Fotos
-          </Button>
+            Alle Fotos ({allPhotos.length})
+          </button>
           {photoCategories.map(category => (
-            <Button
+            <button
               key={category.id}
-              variant={selectedCategory === category.id ? "premium" : "outline"}
               onClick={() => setSelectedCategory(category.id)}
-              className="px-6 py-3"
+              className={`px-5 py-2.5 rounded-lg font-medium transition-all duration-300 ${
+                selectedCategory === category.id
+                  ? "bg-primary text-white shadow-lg shadow-primary/25"
+                  : "bg-card text-foreground hover:bg-muted border border-border"
+              }`}
             >
-              {category.title}
-            </Button>
+              {category.title} ({category.photos.length})
+            </button>
           ))}
         </div>
 
-        {/* Photo Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredPhotos.map(photo => (
-            <Card key={photo.id} className="group hover-lift overflow-hidden">
-              <div className="relative aspect-square">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <div className="cursor-pointer">
-                      <Image
-                        src={photo.src}
-                        alt={photo.alt}
-                        fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
-                        <Eye className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" size={24} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredPhotos.map((photo, index) => (
+            <Dialog key={photo.id}>
+              <DialogTrigger asChild>
+                <div 
+                  className="photo-card group cursor-pointer"
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  <div className="photo-card-image aspect-[4/3] relative">
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="photo-card-overlay" />
+                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="flex items-center gap-3 text-white text-sm">
+                        <span className="flex items-center gap-1">
+                          <Heart size={14} className={likedPhotos.has(photo.id) ? "fill-red-500 text-red-500" : ""} />
+                          {photo.likes}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Eye size={14} />
+                          {photo.views}
+                        </span>
                       </div>
-                    </div>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-4xl">
-                    <div className="flex flex-col md:flex-row gap-6">
-                      <div className="relative aspect-square md:w-1/2">
-                        <Image
-                          src={photo.src}
-                          alt={photo.alt}
-                          fill
-                          className="object-cover rounded-lg"
-                        />
-                      </div>
-                      <div className="md:w-1/2 flex flex-col justify-between">
-                        <div>
-                          <h3 className="text-2xl font-bold mb-2">{photo.alt}</h3>
-                          <p className="text-gray-600 dark:text-gray-400 mb-4">
-                            Schönes Foto aus unserer Sammlung
-                          </p>
-                          <div className="flex items-center gap-4 mb-6">
-                            <div className="flex items-center gap-2">
-                              <Heart className={`cursor-pointer transition-colors ${likedPhotos.has(photo.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} 
-                                    onClick={() => toggleLike(photo.id)} size={20} />
-                              <span className="text-sm font-medium">{photo.likes}</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Eye className="text-gray-400" size={20} />
-                              <span className="text-sm font-medium">{photo.views}</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex gap-3">
-                          <Button variant="premium" className="flex-1">
-                            <Download className="mr-2" size={16} />
-                            Herunterladen
-                          </Button>
-                          <Button variant="premiumSecondary">
-                            <Share2 className="mr-2" size={16} />
-                            Teilen
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              </div>
-              <CardContent className="p-4">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h3 className="font-semibold mb-1">{photo.alt}</h3>
-                    <div className="flex items-center gap-3 text-sm text-gray-500">
-                      <span className="flex items-center gap-1">
-                        <Heart className={likedPhotos.has(photo.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'} size={14} />
-                        {photo.likes}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Eye className="text-gray-400" size={14} />
-                        {photo.views}
-                      </span>
+                      <Eye className="text-white" size={20} />
                     </div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => toggleLike(photo.id)}
-                    className="text-gray-400 hover:text-red-500 transition-colors"
-                  >
-                    <Heart className={likedPhotos.has(photo.id) ? 'fill-red-500 text-red-500' : ''} size={18} />
-                  </Button>
+                  <div className="p-4 bg-card">
+                    <h3 className="font-semibold text-card-foreground mb-1">{photo.alt}</h3>
+                    <p className="text-sm text-muted-foreground">{photo.category}</p>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
+              </DialogTrigger>
+              <DialogContent className="max-w-4xl bg-card">
+                <div className="flex flex-col md:flex-row gap-6 p-2">
+                  <div className="relative aspect-[4/3] md:w-1/2 rounded-xl overflow-hidden">
+                    <Image
+                      src={photo.src}
+                      alt={photo.alt}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="md:w-1/2 flex flex-col justify-between">
+                    <div>
+                      <h2 className="text-2xl font-bold text-foreground mb-2">{photo.alt}</h2>
+                      <p className="text-muted-foreground mb-4">{photo.category}</p>
+                      <div className="flex items-center gap-6 mb-6">
+                        <button 
+                          onClick={() => toggleLike(photo.id)}
+                          className="flex items-center gap-2 text-foreground hover:text-red-500 transition-colors"
+                        >
+                          <Heart className={likedPhotos.has(photo.id) ? "fill-red-500 text-red-500" : ""} size={20} />
+                          <span className="font-medium">{photo.likes + (likedPhotos.has(photo.id) ? 1 : 0)}</span>
+                        </button>
+                        <div className="flex items-center gap-2 text-muted-foreground">
+                          <Eye size={20} />
+                          <span className="font-medium">{photo.views}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex gap-3">
+                      <button className="btn-primary flex items-center gap-2 flex-1">
+                        <Download size={18} />
+                        Herunterladen
+                      </button>
+                      <button className="btn-outline flex items-center gap-2">
+                        <Share2 size={18} />
+                        Teilen
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           ))}
         </div>
 
-        {/* Stats Section */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {photoCategories.map(category => (
-            <Card key={category.id} className="text-center hover-glow">
-              <CardHeader>
-                <div className="feature-icon mx-auto mb-2">
-                  <span className="text-white">📸</span>
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {photoCategories.map(category => {
+            const Icon = category.icon
+            const totalLikes = category.photos.reduce((sum, photo) => sum + photo.likes, 0)
+            return (
+              <div key={category.id} className="p-6 rounded-xl bg-card border border-border hover-lift">
+                <div className="flex items-start gap-4">
+                  <div className="feature-icon">
+                    <Icon size={24} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-foreground mb-1">{category.title}</h3>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      {category.photos.length} Fotos
+                    </p>
+                    <div className="text-2xl font-bold text-gradient">
+                      {totalLikes}
+                    </div>
+                    <p className="text-sm text-muted-foreground">Gesamte Likes</p>
+                  </div>
                 </div>
-                <CardTitle>{category.title}</CardTitle>
-                <CardDescription>
-                  {category.photos.length} Fotos
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-primary mb-2">
-                  {category.photos.reduce((sum, photo) => sum + photo.likes, 0)}
-                </div>
-                <p className="text-sm text-gray-500">Gesamte Likes</p>
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>
